@@ -7,16 +7,18 @@
 </head>
 <body>
   <div id="title-card"></div>
+  <div id="course-outline"></div>
   <script>
-    fetch("components/title-card.html")
-      .then((response) => {
-        if (!response.ok) throw new Error("Could not load the title card.");
-        return response.text();
-      })
-      .then((card) => {
-        document.querySelector("#title-card").innerHTML = card;
-      })
-      .catch((error) => console.error(error));
+    const components = [
+      ["#title-card", "components/title-card.html"],
+      ["#course-outline", "components/course-outline.html"],
+    ];
+
+    Promise.all(components.map(async ([selector, path]) => {
+      const response = await fetch(path);
+      if (!response.ok) throw new Error(`Could not load ${path}.`);
+      document.querySelector(selector).innerHTML = await response.text();
+    })).catch((error) => console.error(error));
   </script>
 </body>
 </html>

@@ -1,0 +1,172 @@
+<style>
+  .course-outline {
+    width: min(100%, 70rem);
+    margin: 0 auto;
+    padding: clamp(2.5rem, 6vw, 5.5rem) clamp(1rem, 5vw, 4rem)
+      clamp(3.5rem, 7vw, 6rem);
+  }
+
+  .unit__number,
+  .week-strip__number,
+  .week-strip__meta {
+    margin: 0;
+    font-size: 0.84rem;
+    font-weight: 800;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+
+  .unit__number,
+  .week-strip__meta {
+    color: var(--forest-900);
+  }
+
+  .course-units {
+    display: grid;
+    gap: clamp(2.75rem, 6vw, 4.5rem);
+  }
+
+  .unit__heading {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    gap: 0.9rem;
+    align-items: baseline;
+    padding-bottom: 0.85rem;
+    border-bottom: 2px solid var(--forest-950);
+  }
+
+  .unit__number {
+    color: rgba(6, 61, 49, 0.62);
+  }
+
+  .unit__title {
+    margin: 0;
+    font-size: clamp(1.35rem, 2.7vw, 1.8rem);
+    line-height: 1;
+    letter-spacing: -0.03em;
+  }
+
+  .unit__weeks {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .week-strip {
+    display: grid;
+    grid-template-columns: 4.25rem minmax(0, 1fr) auto;
+    gap: 1rem;
+    align-items: center;
+    min-height: 4.65rem;
+    border-bottom: 1px solid rgba(6, 61, 49, 0.18);
+  }
+
+  .week-strip__number {
+    color: var(--forest-900);
+  }
+
+  .week-strip__content {
+    min-width: 0;
+  }
+
+  .week-strip__title {
+    margin: 0;
+    font-size: clamp(1.08rem, 2vw, 1.22rem);
+    font-weight: 700;
+    line-height: 1.2;
+  }
+
+  .week-strip__summary {
+    margin: 0.25rem 0 0;
+    color: rgba(6, 61, 49, 0.72);
+    font-size: 0.98rem;
+    line-height: 1.4;
+  }
+
+  .week-strip__meta {
+    text-align: right;
+    white-space: nowrap;
+  }
+
+  @media (max-width: 640px) {
+    .week-strip {
+      grid-template-columns: 3.25rem minmax(0, 1fr);
+      gap: 0.75rem;
+      min-height: 4.9rem;
+    }
+
+    .week-strip__meta {
+      grid-column: 2;
+      justify-self: start;
+      margin-top: -0.55rem;
+      padding-bottom: 0.75rem;
+      font-size: 0.76rem;
+      text-align: left;
+    }
+  }
+</style>
+
+<main class="course-outline" aria-label="Course schedule">
+  <div class="course-units">
+    <section class="unit" aria-labelledby="unit-one-title">
+      <div class="unit__heading">
+        <p class="unit__number">Unit 01</p>
+        <h3 class="unit__title" id="unit-one-title">Sorting and Searching</h3>
+      </div>
+      <ol class="unit__weeks">
+        <li class="week-strip"><p class="week-strip__number">Week 01</p><div class="week-strip__content"><h4 class="week-strip__title">Algorithm Analysis</h4><p class="week-strip__summary">Heap sort and selection sort, with an introduction to analyzing algorithms.</p></div><p class="week-strip__meta">Aug 24–28</p></li>
+        <li class="week-strip"><p class="week-strip__number">Week 02</p><div class="week-strip__content"><h4 class="week-strip__title">Searching and Comparison Sorting</h4><p class="week-strip__summary">Binary search, QuickSort, MergeSort, and asymptotic notation.</p></div><p class="week-strip__meta">Aug 31–Sep 4</p></li>
+        <li class="week-strip"><p class="week-strip__number">Week 03</p><div class="week-strip__content"><h4 class="week-strip__title">Sorting Beyond Comparisons</h4><p class="week-strip__summary">Sorting lower bounds, counting sort, and radix sort.</p></div><p class="week-strip__meta">Sep 7–11</p></li>
+      </ol>
+    </section>
+
+    <section class="unit" aria-labelledby="unit-two-title">
+      <div class="unit__heading">
+        <p class="unit__number">Unit 02</p>
+        <h3 class="unit__title" id="unit-two-title">Data Structures</h3>
+      </div>
+      <ol class="unit__weeks">
+        <li class="week-strip"><p class="week-strip__number">Week 04</p><div class="week-strip__content"><h4 class="week-strip__title">Binary Search Trees</h4><p class="week-strip__summary">Binary search trees and an introduction to AVL trees.</p></div><p class="week-strip__meta">Sep 14–18</p></li>
+        <li class="week-strip"><p class="week-strip__number">Week 05</p><div class="week-strip__content"><h4 class="week-strip__title">AVL Trees</h4><p class="week-strip__summary">Balanced search trees, rotations, and Exam 1.</p></div><p class="week-strip__meta">Sep 21–25</p></li>
+        <li class="week-strip"><p class="week-strip__number">Week 06</p><div class="week-strip__content"><h4 class="week-strip__title">Tries</h4><p class="week-strip__summary">Prefix trees for efficient string storage and lookup.</p></div><p class="week-strip__meta">Sep 28–Oct 2</p></li>
+        <li class="week-strip"><p class="week-strip__number">Week 07</p><div class="week-strip__content"><h4 class="week-strip__title">Heaps, Hash Tables, and Maps</h4><p class="week-strip__summary">Priority structures and fast key-value lookup.</p></div><p class="week-strip__meta">Oct 5–9</p></li>
+      </ol>
+    </section>
+
+    <section class="unit" aria-labelledby="unit-three-title">
+      <div class="unit__heading">
+        <p class="unit__number">Unit 03</p>
+        <h3 class="unit__title" id="unit-three-title">Graph Algorithms</h3>
+      </div>
+      <ol class="unit__weeks">
+        <li class="week-strip"><p class="week-strip__number">Week 08</p><div class="week-strip__content"><h4 class="week-strip__title">Graphs and Breadth-First Search</h4><p class="week-strip__summary">Graph representations, graph searching, and BFS.</p></div><p class="week-strip__meta">Oct 12–16</p></li>
+        <li class="week-strip"><p class="week-strip__number">Week 09</p><div class="week-strip__content"><h4 class="week-strip__title">Shortest Paths: Dijkstra</h4><p class="week-strip__summary">Finding shortest paths in weighted graphs.</p></div><p class="week-strip__meta">Oct 19–23</p></li>
+        <li class="week-strip"><p class="week-strip__number">Week 10</p><div class="week-strip__content"><h4 class="week-strip__title">Bellman-Ford and Network Flows</h4><p class="week-strip__summary">Shortest paths with negative edges, flows, and matching.</p></div><p class="week-strip__meta">Oct 26–30</p></li>
+        <li class="week-strip"><p class="week-strip__number">Week 11</p><div class="week-strip__content"><h4 class="week-strip__title">Network Flows</h4><p class="week-strip__summary">Perfect matching, Edmonds-Karp, and Exam 2.</p></div><p class="week-strip__meta">Nov 2–6</p></li>
+      </ol>
+    </section>
+
+    <section class="unit" aria-labelledby="unit-four-title">
+      <div class="unit__heading">
+        <p class="unit__number">Unit 04</p>
+        <h3 class="unit__title" id="unit-four-title">Algorithm Design</h3>
+      </div>
+      <ol class="unit__weeks">
+        <li class="week-strip"><p class="week-strip__number">Week 12</p><div class="week-strip__content"><h4 class="week-strip__title">Divide and Conquer</h4><p class="week-strip__summary">The master theorem, Karatsuba multiplication, Strassen, and selection.</p></div><p class="week-strip__meta">Nov 9–13</p></li>
+        <li class="week-strip"><p class="week-strip__number">Week 13</p><div class="week-strip__content"><h4 class="week-strip__title">Divide and Conquer to Dynamic Programming</h4><p class="week-strip__summary">Linear-time selection and the longest common subsequence problem.</p></div><p class="week-strip__meta">Nov 16–20</p></li>
+        <li class="week-strip"><p class="week-strip__number">Week 14</p><div class="week-strip__content"><h4 class="week-strip__title">Dynamic Programming</h4><p class="week-strip__summary">Matrix-chain multiplication, with Thanksgiving at the end of the week.</p></div><p class="week-strip__meta">Nov 23–27</p></li>
+      </ol>
+    </section>
+
+    <section class="unit" aria-labelledby="unit-five-title">
+      <div class="unit__heading">
+        <p class="unit__number">Unit 05</p>
+        <h3 class="unit__title" id="unit-five-title">Complexity</h3>
+      </div>
+      <ol class="unit__weeks">
+        <li class="week-strip"><p class="week-strip__number">Week 15</p><div class="week-strip__content"><h4 class="week-strip__title">NP-Completeness</h4><p class="week-strip__summary">P, NP, NP-hardness, NP-completeness, and polynomial-time reductions.</p></div><p class="week-strip__meta">Nov 30–Dec 4</p></li>
+        <li class="week-strip"><p class="week-strip__number">Week 16</p><div class="week-strip__content"><h4 class="week-strip__title">Final Exam Week</h4><p class="week-strip__summary">Study day followed by the final exam on December 10.</p></div><p class="week-strip__meta">Dec 7–11</p></li>
+      </ol>
+    </section>
+  </div>
+</main>
