@@ -18,7 +18,55 @@
       const response = await fetch(path);
       if (!response.ok) throw new Error(`Could not load ${path}.`);
       document.querySelector(selector).innerHTML = await response.text();
-    })).catch((error) => console.error(error));
+    }))
+      .then(() => initializeWeekAccordions())
+      .catch((error) => console.error(error));
+
+    function initializeWeekAccordions() {
+      const weeks = document.querySelectorAll(".week-strip");
+
+      weeks.forEach((week, index) => {
+        const trigger = document.createElement("div");
+        const panel = document.createElement("div");
+        const panelId = `week-resources-${index + 1}`;
+
+        trigger.className = "week-strip__trigger";
+        trigger.setAttribute("role", "button");
+        trigger.tabIndex = 0;
+        trigger.setAttribute("aria-expanded", "false");
+        trigger.setAttribute("aria-controls", panelId);
+
+        while (week.firstChild) trigger.appendChild(week.firstChild);
+
+        panel.id = panelId;
+        panel.className = "week-strip__panel";
+        panel.hidden = true;
+
+        const togglePanel = () => {
+          const opening = trigger.getAttribute("aria-expanded") === "false";
+
+          weeks.forEach((otherWeek) => {
+            const otherTrigger = otherWeek.querySelector(".week-strip__trigger");
+            const otherPanel = otherWeek.querySelector(".week-strip__panel");
+            otherTrigger.setAttribute("aria-expanded", "false");
+            otherPanel.hidden = true;
+          });
+
+          trigger.setAttribute("aria-expanded", String(opening));
+          panel.hidden = !opening;
+        };
+
+        trigger.addEventListener("click", togglePanel);
+        trigger.addEventListener("keydown", (event) => {
+          if (event.key === "Enter" || event.key === " ") {
+            event.preventDefault();
+            togglePanel();
+          }
+        });
+
+        week.append(trigger, panel);
+      });
+    }
   </script>
 </body>
 </html>

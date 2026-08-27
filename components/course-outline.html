@@ -53,12 +53,46 @@
   }
 
   .week-strip {
+    margin: 0.35rem 0;
+    border-bottom: 1px solid rgba(6, 61, 49, 0.18);
+  }
+
+  .week-strip__trigger {
     display: grid;
     grid-template-columns: 4.25rem minmax(0, 1fr) auto;
     gap: 1rem;
     align-items: center;
+    width: calc(100% - 1rem);
     min-height: 4.65rem;
-    border-bottom: 1px solid rgba(6, 61, 49, 0.18);
+    margin: 0.5rem;
+    padding: 0.6rem 0.85rem;
+    color: inherit;
+    font: inherit;
+    text-align: left;
+    cursor: pointer;
+    border: 0;
+    border-radius: 0.45rem;
+    background: transparent;
+  }
+
+  .week-strip__trigger:hover,
+  .week-strip__trigger[aria-expanded="true"] {
+    background: rgba(205, 229, 211, 0.58);
+  }
+
+  .week-strip__trigger:focus-visible {
+    outline: 3px solid var(--forest-900);
+    outline-offset: 2px;
+  }
+
+  .week-strip__panel {
+    width: calc(100% - 3rem);
+    margin: 0 1.5rem 0.75rem;
+    padding: 0.85rem 1rem;
+    color: rgba(6, 61, 49, 0.78);
+    font-weight: 700;
+    border-left: 3px solid var(--forest-900);
+    background: rgba(205, 229, 211, 0.45);
   }
 
   .week-strip__number {
@@ -89,7 +123,7 @@
   }
 
   @media (max-width: 640px) {
-    .week-strip {
+    .week-strip__trigger {
       grid-template-columns: 3.25rem minmax(0, 1fr);
       gap: 0.75rem;
       min-height: 4.9rem;
