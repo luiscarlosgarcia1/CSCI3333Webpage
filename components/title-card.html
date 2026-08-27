@@ -1,0 +1,148 @@
+<style>
+  :root {
+    --forest-950: #063d31;
+    --forest-900: #075541;
+    --mint-100: #e9f4e9;
+    --mint-200: #cde5d3;
+    --white: #ffffff;
+  }
+
+  * {
+    box-sizing: border-box;
+  }
+
+  body {
+    margin: 0;
+    color: var(--forest-950);
+    background: var(--mint-100);
+    font-family: "Avenir Next", Avenir, "Segoe UI", sans-serif;
+  }
+
+  .course-header {
+    display: grid;
+    justify-items: center;
+    width: 100%;
+    padding: clamp(2rem, 5vw, 3.75rem) clamp(1.25rem, 5vw, 4rem)
+      clamp(2.25rem, 5vw, 3.75rem);
+    overflow: hidden;
+    color: var(--white);
+    text-align: center;
+    background:
+      radial-gradient(circle at 12% 0%, rgba(119, 207, 163, 0.18), transparent 27rem),
+      radial-gradient(circle at 90% 88%, rgba(0, 0, 0, 0.16), transparent 25rem),
+      var(--forest-900);
+  }
+
+  .course-header__content {
+    width: min(100%, 70rem);
+  }
+
+  .eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.65rem;
+    margin: 0;
+    color: var(--mint-200);
+    font-size: clamp(0.72rem, 1.6vw, 0.9rem);
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+  }
+
+  .eyebrow::before {
+    width: 0.62rem;
+    height: 0.62rem;
+    content: "";
+    border-radius: 50%;
+    background: #a8d9b4;
+    box-shadow: 0 0 0 0.3rem rgba(168, 217, 180, 0.14);
+  }
+
+  .course-header h1 {
+    margin: 0.85rem 0 0.35rem;
+    font-size: clamp(2.7rem, 7vw, 5.5rem);
+    font-weight: 700;
+    font-variant-numeric: lining-nums;
+    line-height: 1;
+    letter-spacing: -0.045em;
+  }
+
+  .course-name {
+    margin: 0;
+    color: var(--mint-200);
+    font-size: clamp(1rem, 2.1vw, 1.35rem);
+    font-weight: 500;
+    letter-spacing: 0.01em;
+  }
+
+  .course-highlights {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: clamp(0.75rem, 2vw, 1.25rem);
+    width: min(100%, 62rem);
+    margin: clamp(1.45rem, 3vw, 2.25rem) auto 0;
+  }
+
+  .course-highlight {
+    min-height: 7.25rem;
+    padding: 1.15rem 1.25rem;
+    border: 1px solid rgba(233, 244, 233, 0.3);
+    border-radius: 0.9rem;
+    background: rgba(255, 255, 255, 0.09);
+    box-shadow: 0 1.25rem 2.75rem rgba(2, 32, 25, 0.13);
+  }
+
+  .course-highlight__label {
+    margin: 0 0 0.6rem;
+    color: #b9dfc1;
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.13em;
+    text-transform: uppercase;
+  }
+
+  .course-highlight__value {
+    margin: 0;
+    font-size: clamp(0.95rem, 1.6vw, 1.08rem);
+    font-weight: 600;
+    line-height: 1.45;
+  }
+
+  @media (max-width: 640px) {
+    .course-header {
+      padding-inline: 1rem;
+    }
+
+    .course-highlights {
+      grid-template-columns: 1fr;
+      width: min(100%, 25rem);
+    }
+
+    .course-highlight {
+      min-height: 0;
+    }
+  }
+</style>
+
+<header class="course-header" aria-labelledby="course-title">
+  <div class="course-header__content">
+    <p class="eyebrow">Fall Course Hub</p>
+    <h1 id="course-title">CSCI 3333</h1>
+    <p class="course-name">Data Structures and Algorithms</p>
+
+    <section class="course-highlights" aria-label="Course information">
+      <article class="course-highlight">
+        <p class="course-highlight__label">A quick reminder</p>
+        <p class="course-highlight__value">Work hard, practice often, and ask questions early.</p>
+      </article>
+      <article class="course-highlight">
+        <p class="course-highlight__label">Stay connected</p>
+        <p class="course-highlight__value">Bookmark this page so course resources are always close by.</p>
+      </article>
+      <article class="course-highlight">
+        <p class="course-highlight__label">Fresh content</p>
+        <p class="course-highlight__value">Check back every Friday for the latest course updates.</p>
+      </article>
+    </section>
+  </div>
+</header>

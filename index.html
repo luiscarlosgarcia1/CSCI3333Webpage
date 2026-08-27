@@ -1,1 +1,22 @@
-Initial file
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CSCI 3333 | Data Structures and Algorithms</title>
+</head>
+<body>
+  <div id="title-card"></div>
+  <script>
+    fetch("components/title-card.html")
+      .then((response) => {
+        if (!response.ok) throw new Error("Could not load the title card.");
+        return response.text();
+      })
+      .then((card) => {
+        document.querySelector("#title-card").innerHTML = card;
+      })
+      .catch((error) => console.error(error));
+  </script>
+</body>
+</html>
