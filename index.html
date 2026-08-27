@@ -22,10 +22,10 @@
       .then(() => initializeWeekAccordions())
       .catch((error) => console.error(error));
 
-    function initializeWeekAccordions() {
+    async function initializeWeekAccordions() {
       const weeks = document.querySelectorAll(".week-strip");
 
-      weeks.forEach((week, index) => {
+      await Promise.all([...weeks].map(async (week, index) => {
         const trigger = document.createElement("div");
         const panel = document.createElement("div");
         const panelId = `week-resources-${index + 1}`;
@@ -41,6 +41,19 @@
         panel.id = panelId;
         panel.className = "week-strip__panel";
         panel.hidden = true;
+
+        if (week.dataset.resourcePath) {
+          const response = await fetch(week.dataset.resourcePath);
+          if (!response.ok) {
+            throw new Error(`Could not load ${week.dataset.resourcePath}.`);
+          }
+          panel.innerHTML = await response.text();
+        }
+
+        if (!panel.childElementCount && !panel.textContent.trim()) {
+          panel.textContent = "Nothing to see here for now!";
+          panel.classList.add("week-strip__panel--empty");
+        }
 
         const togglePanel = () => {
           const opening = trigger.getAttribute("aria-expanded") === "false";
@@ -65,7 +78,7 @@
         });
 
         week.append(trigger, panel);
-      });
+      }));
     }
   </script>
 </body>
