@@ -15,7 +15,7 @@
     ];
 
     Promise.all(components.map(async ([selector, path]) => {
-      const response = await fetch(path);
+      const response = await fetch(path, { cache: "no-store" });
       if (!response.ok) throw new Error(`Could not load ${path}.`);
       document.querySelector(selector).innerHTML = await response.text();
     }))
@@ -43,7 +43,7 @@
         panel.hidden = true;
 
         if (week.dataset.resourcePath) {
-          const response = await fetch(week.dataset.resourcePath);
+          const response = await fetch(week.dataset.resourcePath, { cache: "no-store" });
           if (!response.ok) {
             throw new Error(`Could not load ${week.dataset.resourcePath}.`);
           }
