@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Week 2 Recap | CSCI 3333</title>
+  <style>
+    :root {
+      color-scheme: light;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      color: #172033;
+      background: #f7f9fc;
+    }
+
+    body {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 3rem 1.25rem 4rem;
+      line-height: 1.65;
+    }
+
+    main {
+      padding: clamp(1.5rem, 4vw, 3rem);
+      background: #fff;
+      border: 1px solid #dce3ef;
+      border-radius: 1rem;
+      box-shadow: 0 0.5rem 2rem rgb(23 32 51 / 8%);
+    }
+
+    h1, h2, h3 { line-height: 1.2; }
+    h1 { margin-top: 0; font-size: clamp(2rem, 5vw, 3rem); }
+    h2 { margin-top: 3rem; padding-bottom: 0.45rem; border-bottom: 2px solid #dce3ef; }
+    h3 { margin-top: 2rem; font-size: 1.15rem; }
+    p, ul { margin: 0.8rem 0; }
+    code { padding: 0.1em 0.3em; border-radius: 0.25rem; background: #eef2f7; font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; }
+    pre { margin: 1rem 0; padding: 1rem; overflow-x: auto; border-radius: 0.5rem; background: #172033; color: #f7f9fc; line-height: 1.45; }
+    pre code { padding: 0; background: transparent; color: inherit; }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>Week 2 Recap</h1>
+
+    <h2>Binary Search</h2>
+    <h3>1. Recap</h3>
+    <p>Binary search finds a target in a sorted array. It checks the middle value, then discards the half that cannot contain the target. Its running time is <code>O(log N)</code>.</p>
+    <h3>2. Visual</h3>
+    <p>Search for <code>23</code>:</p>
+    <pre><code>[ 4, 8, 12, 17, 23, 31, 42 ]
+             ^
+            17
+
+23 &gt; 17, so search the right half.
+
+[ 23, 31, 42 ]
+   ^
+ target</code></pre>
+    <h3>3. Pseudocode</h3>
+    <pre><code>binarySearch(a, x):
+    low = 0
+    high = a.size() - 1
+
+    while low &lt;= high:
+        mid = (low + high) // 2
+        if a[mid] &lt; x: low = mid + 1
+        else if a[mid] &gt; x: high = mid - 1
+        else: return mid
+
+    return -1</code></pre>
+
+    <h2>QuickSort</h2>
+    <h3>1. Recap</h3>
+    <p>QuickSort is a divide-and-conquer algorithm: choose a <strong>pivot</strong>, split the remaining values into a group that are smaller than the pivot and a group that are larger than the pivot, then recursively sort both groups.</p>
+    <p>Its average running time is <code>O(N log N)</code>, although consistently poor pivot choices or an array with values close to decending order can produce <code>O(N²)</code> time.</p>
+    <h3>2. Visual</h3>
+    <p>Suppose the pivot is <code>5</code>:</p>
+    <pre><code>Unsorted values
+[ 8, 3, 5, 1, 7, 4 ]
+        ^
+      pivot
+
+After partitioning around 5
+[ 3, 1, 4 ], 5, [ 8, 7 ]
+   &lt;= 5           &gt;= 5
+
+QuickSort(left)     pivot     QuickSort(right)
+   [ 1, 3, 4 ],       5,          [ 7, 8 ]
+
+Final result: [ 1, 3, 4, 5, 7, 8 ]</code></pre>
+    <h3>3. Pseudocode</h3>
+    <pre><code>quickSort(A):
+    if a has zero or one element:
+        stop
+
+    choose pivot
+    partition A in place around the pivot
+    quickSort(left subarray)
+    quickSort(right subarray)</code></pre>
+    <p>QuickSort rearranges the original array; it does not build separate left and right arrays.</p>
+    <p><em>Textbook basis: Section 7.7, “Quicksort.”</em></p>
+
+    <h2>Merge Sort</h2>
+    <h3>1. Recap</h3>
+    <p>Merge sort divides an array into smaller halves, sorts each half, then merges the sorted halves. Merging takes the smaller front value each time. Its running time is <code>O(N log N)</code>.</p>
+    <h3>2. Visual</h3>
+    <pre><code>   [ 8, 3, 5, 1 ]
+      /      \
+[ 8, 3 ]  [ 5, 1 ]
+    /  \      /  \
+  [ 8 ][ 3 ][ 5 ][ 1 ]
+    \  /      \  /
+  [ 3, 8 ]  [ 1, 5 ]
+      \      /
+    [ 1, 3, 5, 8 ]</code></pre>
+    <h3>3. Pseudocode</h3>
+    <pre><code>mergeSort(a):
+    if a has one element:
+        return a
+
+    split a into two halves
+    return merge(mergeSort(left), mergeSort(right))
+
+merge(left, right):
+    repeatedly copy the smaller front value
+    when one subarray is empty, copy what remains</code></pre>
+    <p><em>Textbook basis: Section 7.6, “Mergesort.”</em></p>
+
+    <h2>Asymptotic Notation</h2>
+    <h3>1. Recap</h3>
+    <p>Asymptotic notation compares how an algorithm's running time grows as input size, <code>N</code>, gets large. It ignores constant factors and lower-order terms so we can focus on the growth rate.</p>
+    <ul>
+      <li><code>O</code> gives an upper bound.</li>
+      <li><code>Ω</code> gives a lower bound.</li>
+      <li><code>Θ</code> gives a tight bound.</li>
+    </ul>
+    <h3>2. Visual</h3>
+    <pre><code>T(N) = 2N² + 7N + 4
+
+small N:  7N and 4 matter
+large N:  2N² dominates
+
+T(N) = Θ(N²)
+
+1 &lt; log N &lt; N &lt; N log N &lt; N² &lt; 2ᴺ</code></pre>
+    <h3>3. Pseudocode</h3>
+    <pre><code>for i from 0 to N - 1:
+    for j from 0 to N - 1:
+        do constant work</code></pre>
+    <p>The inner loop runs <code>N</code> times for each of <code>N</code> outer-loop passes: <code>N × N = N²</code>. The running time is <code>Θ(N²)</code>.</p>
+  </main>
+</body>
+</html>

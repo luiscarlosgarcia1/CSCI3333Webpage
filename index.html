@@ -67,6 +67,16 @@
 
           trigger.setAttribute("aria-expanded", String(opening));
           panel.hidden = !opening;
+
+          if (opening) {
+            requestAnimationFrame(() => {
+              const behavior = window.matchMedia("(prefers-reduced-motion: reduce)").matches
+                ? "auto"
+                : "smooth";
+
+              trigger.scrollIntoView({ behavior, block: "center" });
+            });
+          }
         };
 
         trigger.addEventListener("click", togglePanel);
