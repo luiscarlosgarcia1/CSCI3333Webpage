@@ -9,15 +9,15 @@ using namespace std;
 // This file declares the public interface. Other .cpp files can include it.
 class TaskList 
 {
-public:
-    void add(string task);
-    void addSuffix(const string& suffix);
+    public:
+        void add(string task);
+        void addSuffix(const string& suffix);
 
-    int count();
-    int countLongerThan(int length);
+        int count();
+        int countLongerThan(int length);
 
-private:
-    vector<string> tasks;
+    private:
+        vector<string> tasks;
 };
 
 #endif

@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Week [NUMBER] Recap | CSCI 3333</title>
+  <!-- From assets/weeks/week[number]/, this path reaches the shared component CSS. -->
+  <link rel="stylesheet" href="../../../components/week-recap.css">
+</head>
+<body>
+  <header class="page-header">
+    <a class="home-link" href="../../../index.html">← Home</a>
+    <div class="page-header__content">
+      <p class="eyebrow">CSCI 3333 · Week [NUMBER, TWO DIGITS]</p>
+      <h1>[WEEK TITLE]</h1>
+      <p class="page-header__summary">[One-sentence summary of this week's topics.]</p>
+    </div>
+  </header>
+
+  <main class="recap">
+    <!-- Duplicate this article once for every topic. Keep each id unique and update its matching aria-labelledby value. -->
+    <article class="topic-card" aria-labelledby="topic-one-title">
+      <h2 class="topic-card__heading" id="topic-one-title"><span class="topic-card__number">01</span> [TOPIC NAME]</h2>
+      <div class="topic-card__body">
+        <section>
+          <p class="section-label">Recap</p>
+          <p>[Explain the main idea, invariant, or problem this topic solves.]</p>
+        </section>
+        <section>
+          <p class="section-label">Visual</p>
+          <pre>[A compact trace, diagram, or example.]</pre>
+        </section>
+        <section>
+          <p class="section-label">Pseudocode</p>
+          <pre>[Essential pseudocode or a short operation trace.]</pre>
+          <p class="note">[Optional textbook basis or useful note.]</p>
+        </section>
+      </div>
+    </article>
+
+    <nav class="recap-footer" aria-label="Page navigation">
+      <a class="return-link" href="../../../index.html">← Back to homepage</a>
+    </nav>
+  </main>
+</body>
+</html>
