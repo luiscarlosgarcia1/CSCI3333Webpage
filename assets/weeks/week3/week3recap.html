@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Week 3 Recap | CSCI 3333</title>
+  <link rel="stylesheet" href="../../../components/week-recap.css">
+</head>
+<body>
+  <header class="page-header">
+    <a class="home-link" href="../../../index.html">← Home</a>
+    <div class="page-header__content">
+      <p class="eyebrow">CSCI 3333 · Week 03</p>
+      <h1>Sorting Bounds &amp; Bounded Universes</h1>
+      <p class="page-header__summary">Why comparison sorting has an Ω(N log N) limit, and how integer keys let counting sort and radix sort bypass it.</p>
+    </div>
+  </header>
+
+  <main class="recap">
+    <article class="topic-card" aria-labelledby="comparison-upper-title">
+      <h2 class="topic-card__heading" id="comparison-upper-title"><span class="topic-card__number">01</span> Comparison Sorting: An Upper Bound</h2>
+      <div class="topic-card__body">
+        <section>
+          <p class="section-label">Recap</p>
+          <p>A comparison sort learns order only by asking questions such as <code>a[i] &lt; a[j]</code>. Merge sort and QuickSort show that sorting can be done in <code>O(N log N)</code> comparisons: each level handles <code>N</code> items, and there are about <code>log N</code> levels.</p>
+        </section>
+        <section>
+          <p class="section-label">Visual</p>
+          <pre>Merge sort levels for N = 8
+
+8 items       do N total merge work
+4 + 4         do N total merge work
+2 + 2 + 2 + 2 do N total merge work
+1 + ... + 1
+
+log₂ 8 = 3 levels  ×  8 work/level = Θ(N log N)</pre>
+        </section>
+        <section>
+          <p class="section-label">Core idea</p>
+          <p>For an upper bound, one successful algorithm is enough. Merge sort guarantees <code>Θ(N log N)</code>; QuickSort has expected <code>O(N log N)</code> time when its partitions are reasonably balanced.</p>
+          <p class="note">Textbook basis: Sections 7.6, “Mergesort,” and 7.7, “Quicksort.”</p>
+        </section>
+      </div>
+    </article>
+
+    <article class="topic-card" aria-labelledby="comparison-lower-title">
+      <h2 class="topic-card__heading" id="comparison-lower-title"><span class="topic-card__number">02</span> Comparison Sorting: A Lower Bound</h2>
+      <div class="topic-card__body">
+        <section>
+          <p class="section-label">Recap</p>
+          <p>There are <code>N!</code> possible orders for <code>N</code> distinct items. A correct comparison sort must distinguish all of them. Since one comparison has only two outcomes, its decision tree needs at least <code>N!</code> leaves.</p>
+        </section>
+        <section>
+          <p class="section-label">Visual · Three items</p>
+          <pre>                 compare a and b
+                   /             \
+                a &lt; b           b &lt; a
+                 ...             ...
+
+Leaves must cover every possible order:
+abc  acb  bac  bca  cab  cba
+
+6 leaves require a tree of height at least log₂(6).</pre>
+        </section>
+        <section>
+          <p class="section-label">Lower-bound result</p>
+          <pre>height ≥ log₂(N!) = Ω(N log N)</pre>
+          <p>So no comparison-based sorting algorithm can guarantee better than <code>Ω(N log N)</code> time in the worst case. Together with merge sort’s upper bound, comparison sorting has a tight <code>Θ(N log N)</code> bound.</p>
+          <p class="note">Textbook basis: Section 7.8, “A Lower Bound for Sorting.”</p>
+        </section>
+      </div>
+    </article>
+
+    <article class="topic-card" aria-labelledby="counting-title">
+      <h2 class="topic-card__heading" id="counting-title"><span class="topic-card__number">03</span> Counting Sort</h2>
+      <div class="topic-card__body">
+        <section>
+          <p class="section-label">Recap</p>
+          <p>Counting sort applies when keys are integers from a small known range, <code>0</code> through <code>K - 1</code>. Instead of comparing values, count how often each key occurs, then emit each key that many times.</p>
+        </section>
+        <section>
+          <p class="section-label">Visual</p>
+          <pre>Input:  [ 2, 0, 2, 1, 1, 0 ]
+Count:  [ 2, 2, 2 ]
+index:    0  1  2
+
+output 0 twice, 1 twice, 2 twice
+Result: [ 0, 0, 1, 1, 2, 2 ]</pre>
+        </section>
+        <section>
+          <p class="section-label">Pseudocode</p>
+          <pre>countingSort(A, K):
+    counts = array of K zeros
+    for each x in A:
+        counts[x] += 1
+    for key from 0 to K - 1:
+        output key, counts[key] times</pre>
+          <p>The running time is <code>O(N + K)</code>. It is linear when the key range <code>K</code> is not much larger than <code>N</code>.</p>
+        </section>
+      </div>
+    </article>
+
+    <article class="topic-card" aria-labelledby="radix-title">
+      <h2 class="topic-card__heading" id="radix-title"><span class="topic-card__number">04</span> Radix Sort</h2>
+      <div class="topic-card__body">
+        <section>
+          <p class="section-label">Recap</p>
+          <p>Radix sort sorts fixed-width integer keys one digit at a time, from least significant to most significant. Each digit pass must use a <strong>stable</strong> sort, so equal-digit items keep the order established by earlier passes.</p>
+        </section>
+        <section>
+          <p class="section-label">Visual · Ones, then tens</p>
+          <pre>Input:        [ 31, 12, 23, 14 ]
+ones digit:   [ 31, 12, 23, 14 ]
+tens digit:   [ 12, 14, 23, 31 ]
+
+The ones-digit ordering is preserved within
+each equal tens-digit group.</pre>
+        </section>
+        <section>
+          <p class="section-label">Pseudocode</p>
+          <pre>radixSort(A, d):
+    for digit from least significant to most significant:
+        stably counting-sort A by that digit</pre>
+          <p>With <code>d</code> digits in base <code>K</code>, the time is <code>O(d(N + K))</code>. These sorts evade the comparison lower bound because they inspect key values directly rather than only comparing pairs.</p>
+          <p class="note">Textbook basis: Section 7.11, “Bucket-Sort and Radix-Sort.”</p>
+        </section>
+      </div>
+    </article>
+
+    <nav class="recap-footer" aria-label="Page navigation">
+      <a class="return-link" href="../../../index.html">← Back to homepage</a>
+    </nav>
+  </main>
+</body>
+</html>
