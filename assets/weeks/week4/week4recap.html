@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Week 4 Recap | CSCI 3333</title>
+  <link rel="stylesheet" href="../../../components/week-recap.css">
+</head>
+<body>
+  <header class="page-header">
+    <a class="home-link" href="../../../index.html">← Home</a>
+    <div class="page-header__content">
+      <p class="eyebrow">CSCI 3333 · Week 04</p>
+      <h1>Binary Search Trees &amp; AVL Trees</h1>
+      <p class="page-header__summary">A BST keeps values ordered for efficient search; an AVL tree keeps that search path short by rebalancing.</p>
+    </div>
+  </header>
+
+  <main class="recap">
+    <article class="topic-card" aria-labelledby="bst-title">
+      <h2 class="topic-card__heading" id="bst-title"><span class="topic-card__number">01</span> Binary Search Trees</h2>
+      <div class="topic-card__body">
+        <section>
+          <p class="section-label">Recap</p>
+          <p>A binary search tree (BST) stores each node so that every value in its left subtree is smaller and every value in its right subtree is larger. To search or insert, compare once at each visited node and continue down just one branch.</p>
+          <p>The work is <code>O(h)</code>, where <code>h</code> is the tree height: <code>O(log N)</code> when the tree is balanced, but <code>O(N)</code> when it becomes a chain.</p>
+        </section>
+        <section>
+          <p class="section-label">Visual · Search for 23</p>
+          <pre>        20
+       /  \
+     10    30
+    / \    / \
+   5  15  23  40
+          ^
+
+23 &gt; 20  → go right
+23 &lt; 30  → go left
+23 = 23  → found</pre>
+        </section>
+        <section>
+          <p class="section-label">Pseudocode</p>
+          <pre>contains(node, x):
+    while node is not null:
+        if x &lt; node.key:
+            node = node.left
+        else if x &gt; node.key:
+            node = node.right
+        else:
+            return true
+    return false
+
+insert follows the same comparisons,
+then attaches a new leaf at a null link.</pre>
+          <p class="note">Textbook basis: Sections 4.1–4.3, including Section 4.3, “The Search Tree ADT—Binary Search Trees.”</p>
+        </section>
+      </div>
+    </article>
+
+    <article class="topic-card" aria-labelledby="avl-title">
+      <h2 class="topic-card__heading" id="avl-title"><span class="topic-card__number">02</span> AVL Trees</h2>
+      <div class="topic-card__body">
+        <section>
+          <p class="section-label">Recap</p>
+          <p>An AVL tree is a BST that maintains balance after insertions and deletions. At every node, the heights of the left and right subtrees differ by at most one. This keeps the height <code>O(log N)</code>, so searching, inserting, and removing are all <code>O(log N)</code>.</p>
+          <p>When a node becomes unbalanced, a rotation changes the local shape while preserving the BST ordering rule.</p>
+        </section>
+        <section>
+          <p class="section-label">Visual · Left-Left imbalance</p>
+          <pre>Before insertion       After right rotation
+      30                       20
+     /                        /  \
+   20                        10  30
+  /
+10
+
+The subtree stays in sorted order:
+10, 20, 30</pre>
+        </section>
+        <section>
+          <p class="section-label">Rotations</p>
+          <pre>balance = height(left) - height(right)
+
+balance = +2  (left heavy)
+  left-left  → rotate right
+  left-right → rotate left on left child,
+               then rotate right
+
+balance = -2  (right heavy)
+  right-right → rotate left
+  right-left  → rotate right on right child,
+                then rotate left</pre>
+          <p class="note">Textbook basis: Section 4.4, “AVL Trees,” especially Sections 4.4.1–4.4.2 on single and double rotations.</p>
+        </section>
+      </div>
+    </article>
+
+    <nav class="recap-footer" aria-label="Page navigation">
+      <a class="return-link" href="../../../index.html">← Back to homepage</a>
+    </nav>
+  </main>
+</body>
+</html>
