@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Week 5 Recap | AVL Rotations | CSCI 3333</title>
+  <link rel="stylesheet" href="../../../components/week-recap.css">
+</head>
+<body>
+  <header class="page-header">
+    <a class="home-link" href="../../../index.html">← Home</a>
+    <div class="page-header__content">
+      <p class="eyebrow">CSCI 3333 · Week 05</p>
+      <h1>AVL Rotations</h1>
+      <p class="page-header__summary">The four local reshapes that restore AVL balance while keeping the binary-search-tree order intact.</p>
+    </div>
+  </header>
+
+  <main class="recap">
+    <article class="topic-card" aria-labelledby="rotation-map-title">
+      <h2 class="topic-card__heading" id="rotation-map-title"><span class="topic-card__number">01</span> AVL Rebalancing</h2>
+      <div class="topic-card__body">
+        <section>
+          <p class="section-label">Recap</p>
+          <p>Insertion first works down the tree exactly like a normal binary-search-tree insertion: compare the new value at each node and follow the left or right child until it reaches an empty position. Then the recursive calls return upward along that same path.</p>
+          <p>On the way back up, each visited node checks the heights of its left and right subtrees. If their difference becomes greater than one, that node is rebalanced with the matching rotation. <code>P</code> is the parent above the affected subtree; after the rotation, <code>P</code> points to the subtree’s new top node.</p>
+          <p>Every diagram preserves the in-order sequence, so it also preserves the BST rule. The case name describes the two directions from the unbalanced node: <code>LL</code>, <code>RR</code>, <code>LR</code>, or <code>RL</code>.</p>
+        </section>
+        <section>
+          <p class="section-label">Visual · The local view</p>
+          <pre>Only this link above the subtree changes:
+
+         (P)                       (P)
+          |                         |
+ subtree root  becomes | subtree's new top node
+
+Everything outside this small subtree is unchanged.</pre>
+        </section>
+        <section>
+          <p class="section-label">Key idea</p>
+          <p>The taller inside or outside path is shortened by moving its middle node upward. A node that moves down keeps the child subtree whose values still belong on that side of it.</p>
+          <p class="note">Textbook basis: Section 4.4, “AVL Trees,” especially Sections 4.4.1–4.4.2 on single and double rotations.</p>
+        </section>
+      </div>
+    </article>
+
+    <article class="topic-card" aria-labelledby="ll-title">
+      <h2 class="topic-card__heading" id="ll-title"><span class="topic-card__number">02</span> Left-Left (LL)</h2>
+      <div class="topic-card__body">
+        <section>
+          <p class="section-label">Recap</p>
+          <p><code>A</code> is too heavy on the left, and its left child <code>B</code> is also heavy on the left. <code>B</code> becomes the top of this subtree. <code>A</code> moves down to become <code>B</code>’s right child.</p>
+        </section>
+        <section>
+          <p class="section-label">Visual · Right rotation at A</p>
+          <pre class="tree-diagram">Before                                      After
+              (P)                                      (P)
+               |                                        |
+              (A)                                      (B)
+             /   \                                    /   \
+           (B)   (N)                                (BL)  (A)
+           / \                                      /    / \
+        (BL) (BR)                                  (N) (BR) (N)
+        /
+      (N)
+
+The path A → B → N → N is two levels longer than A → N.
+B rotates up and takes A as its right child. B’s right child, BR, is
+now between B and A, so A adopts BR as its left child.</pre>
+        </section>
+      </div>
+    </article>
+
+    <article class="topic-card" aria-labelledby="rr-title">
+      <h2 class="topic-card__heading" id="rr-title"><span class="topic-card__number">03</span> Right-Right (RR)</h2>
+      <div class="topic-card__body">
+        <section>
+          <p class="section-label">Recap</p>
+          <p><code>A</code> is too heavy on the right, and its right child <code>B</code> is also heavy on the right. <code>B</code> becomes the top of this subtree. <code>A</code> moves down to become <code>B</code>’s left child.</p>
+        </section>
+        <section>
+          <p class="section-label">Visual · Left rotation at A</p>
+          <pre class="tree-diagram">Before                                      After
+              (P)                                      (P)
+               |                                        |
+              (A)                                      (B)
+             /   \                                    /   \
+           (N)   (B)                                (A)  (BR)
+                 / \                                / \    \
+              (BL) (BR)                           (N) (BL)  (N)
+                     \
+                     (N)
+
+The path A → B → N → N is two levels longer than A → N.
+B rotates up and takes A as its left child. B’s left child, BL, is
+now between A and B, so A adopts BL as its right child.</pre>
+        </section>
+      </div>
+    </article>
+
+    <article class="topic-card" aria-labelledby="lr-title">
+      <h2 class="topic-card__heading" id="lr-title"><span class="topic-card__number">04</span> Left-Right (LR)</h2>
+      <div class="topic-card__body">
+        <section>
+          <p class="section-label">Recap</p>
+          <p><code>A</code> is left-heavy, but its left child <code>B</code> is right-heavy. The middle node, <code>C</code>, becomes the new top. It directly takes <code>B</code> and <code>A</code> as its children, making the subtree balanced again.</p>
+        </section>
+        <section>
+          <p class="section-label">Visual · C rises above B and A</p>
+          <pre class="tree-diagram">Before                                      After
+              (P)                                      (P)
+               |                                        |
+              (A)                                      (C)
+             /   \                                    /   \
+           (B)   (N)                                (B)   (A)
+           / \                                      / \   / \
+         (N) (C)                                 (N)(CL) (CR)(N)
+             / \
+          (CL) (CR)
+
+The path A → B → C is two levels longer than A → N.
+C rotates up and takes B and A as its children. C’s left child, CL, is
+adopted by B, and C’s right child, CR, is adopted by A.</pre>
+        </section>
+      </div>
+    </article>
+
+    <article class="topic-card" aria-labelledby="rl-title">
+      <h2 class="topic-card__heading" id="rl-title"><span class="topic-card__number">05</span> Right-Left (RL)</h2>
+      <div class="topic-card__body">
+        <section>
+          <p class="section-label">Recap</p>
+          <p><code>A</code> is right-heavy, but its right child <code>B</code> is left-heavy. The middle node, <code>C</code>, becomes the new top. It directly takes <code>A</code> and <code>B</code> as its children, making the subtree balanced again.</p>
+        </section>
+        <section>
+          <p class="section-label">Visual · C rises above A and B</p>
+          <pre class="tree-diagram">Before                                      After
+              (P)                                      (P)
+               |                                        |
+              (A)                                      (C)
+             /   \                                    /   \
+           (N)   (B)                                (A)   (B)
+                 / \                                / \   / \
+               (C) (N)                           (N)(CL) (CR)(N)
+              / \
+            (CL)(CR)
+
+The path A → B → C is two levels longer than A → N.
+C rotates up and takes A and B as its children. C’s left child, CL, is
+adopted by A, and C’s right child, CR, is adopted by B.</pre>
+        </section>
+      </div>
+    </article>
+
+    <nav class="recap-footer" aria-label="Page navigation">
+      <a class="return-link" href="../../../index.html">← Back to homepage</a>
+    </nav>
+  </main>
+</body>
+</html>

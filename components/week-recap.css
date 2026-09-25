@@ -240,4 +240,10 @@ pre {
     white-space: pre-wrap;
     overflow-wrap: anywhere;
   }
+
+  pre.tree-diagram {
+    overflow-x: auto;
+    white-space: pre;
+    overflow-wrap: normal;
+  }
 }
