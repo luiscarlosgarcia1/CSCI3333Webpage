@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Week 6 Recap | Tries | CSCI 3333</title>
+  <link rel="stylesheet" href="../../../components/week-recap.css">
+</head>
+<body>
+  <header class="page-header">
+    <a class="home-link" href="../../../index.html">← Home</a>
+    <div class="page-header__content">
+      <p class="eyebrow">CSCI 3333 · Week 06</p>
+      <h1>Tries</h1>
+      <p class="page-header__summary">A prefix tree stores words one character at a time, making shared beginnings and prefix searches easy to follow.</p>
+    </div>
+  </header>
+
+  <main class="recap">
+    <article class="topic-card" aria-labelledby="trie-idea-title">
+      <h2 class="topic-card__heading" id="trie-idea-title"><span class="topic-card__number">01</span> The Prefix-Tree Idea</h2>
+      <div class="topic-card__body">
+        <section>
+          <p class="section-label">Recap</p>
+          <p>A trie stores a set of strings by putting one character on each edge. The root represents the empty string, and the path from the root to any node spells a prefix. A node needs an <code>isWord</code> marker because a word can end while longer words continue from that same node.</p>
+        </section>
+        <section>
+          <p class="section-label">Visual · Store to, tea, ten, and ted</p>
+          <pre>root
+└── t
+    ├── o  • word: to
+    └── e
+        ├── a  • word: tea
+        ├── d  • word: ted
+        └── n  • word: ten
+
+The node for t + e is only a prefix.
+The node for t + o is both a prefix and word.</pre>
+        </section>
+        <section>
+          <p class="section-label">Key invariant</p>
+          <p>At every step, choose the child whose edge matches the next character. If that child does not exist, the requested word or prefix is not in the trie. The work depends on the word length <code>L</code>, so lookup and insertion are <code>O(L)</code>.</p>
+          <p class="note">Textbook basis: Section 12.4.2, “Suffix Trees” (pp. 583–584), which introduces basic and compressed tries.</p>
+        </section>
+      </div>
+    </article>
+
+    <article class="topic-card" aria-labelledby="trie-operations-title">
+      <h2 class="topic-card__heading" id="trie-operations-title"><span class="topic-card__number">02</span> Lookup, Insertion, and Removal</h2>
+      <div class="topic-card__body">
+        <section>
+          <p class="section-label">Recap</p>
+          <p>Lookup and insertion both walk one edge per character. Lookup succeeds only when the final node is marked as a complete word; insertion creates only the missing part of the path, then marks the last node. To remove a word, clear its ending marker and prune upward only while a node has no children and is not another word’s ending.</p>
+        </section>
+        <section>
+          <p class="section-label">Visual · Search for ten</p>
+          <pre>start at root
+  read t  → follow t
+  read e  → follow e
+  read n  → follow n
+  at n and isWord is true → "ten" is stored</pre>
+        </section>
+        <section>
+          <p class="section-label">Example · Remove ted</p>
+          <pre>Before: te → d  • word: ted
+
+Clear d.isWord.
+The d node has no children, so remove it.
+Work our way back up the path.
+At e, stop pruning becaues e still has children (a and n)
+
+After removal: tea and ten remain; ted is gone.</pre>
+        </section>
+      </div>
+    </article>
+
+    <article class="topic-card" aria-labelledby="trie-prefixes-title">
+      <h2 class="topic-card__heading" id="trie-prefixes-title"><span class="topic-card__number">03</span> Prefixes</h2>
+      <div class="topic-card__body">
+        <section>
+          <p class="section-label">Recap</p>
+          <p>A prefix is the beginning of one or more stored words. To autocomplete a prefix, follow its path first, then traverse every descendant below that node. Each terminal node reached gives one completion.</p>
+        </section>
+        <section>
+          <p class="section-label">Visual · Complete te</p>
+          <pre>Follow the prefix: root → t → e
+
+Traverse below e:
+  e → a  • word: tea
+  e → d  • word: ted
+  e → n  • word: ten
+
+Completions for "te": tea, ted, ten</pre>
+        </section>
+        <section>
+          <p class="section-label">Example</p>
+          <p>Tries are useful when many words share beginnings and the question is about prefixes: autocomplete, dictionaries, spell checking, or finding all words that start with a query.</p>
+        </section>
+      </div>
+    </article>
+
+    <article class="topic-card" aria-labelledby="trie-pseudocode-title">
+      <h2 class="topic-card__heading" id="trie-pseudocode-title"><span class="topic-card__number">04</span> Operations Pseudocode</h2>
+      <div class="topic-card__body">
+        <section>
+          <p class="section-label">Recap</p>
+          <p>All three basic operations first follow the word’s character path. The final action determines whether the trie checks, adds, or removes the word.</p>
+        </section>
+        <section>
+          <p class="section-label">Pseudocode</p>
+          <pre>contains(word):
+    node = root
+    for each ch in word:
+        if node has no child ch: return false
+        node = node.child[ch]
+    return node.isWord
+
+insert(word):
+    node = root
+    for each ch in word:
+        if node has no child ch: create it
+        node = node.child[ch]
+    node.isWord = true
+
+remove(word):
+    follow the word's path; if it is not a word, stop
+    clear the final node's isWord marker
+    remove nodes upward while they have no children and are not words</pre>
+        </section>
+      </div>
+    </article>
+
+    <nav class="recap-footer" aria-label="Page navigation">
+      <a class="return-link" href="../../../index.html">← Back to homepage</a>
+    </nav>
+  </main>
+</body>
+</html>
