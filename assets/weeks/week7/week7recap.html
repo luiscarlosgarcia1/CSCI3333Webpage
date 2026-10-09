@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Week 7 Recap | CSCI 3333</title>
+  <link rel="stylesheet" href="../../../components/week-recap.css">
+</head>
+<body>
+  <header class="page-header">
+    <a class="home-link" href="../../../index.html">← Home</a>
+    <div class="page-header__content">
+      <p class="eyebrow">CSCI 3333 · Week 07</p>
+      <h1>Heaps, Hash Tables &amp; Maps</h1>
+      <p class="page-header__summary">A compact review of priority queues, binary heaps, hashing, and C++ key-value containers.</p>
+    </div>
+  </header>
+  <main class="recap">
+    <article class="topic-card" aria-labelledby="priority-queue-title">
+      <h2 class="topic-card__heading" id="priority-queue-title"><span class="topic-card__number">01</span> Priority Queues</h2>
+      <div class="topic-card__body">
+        <section>
+          <p class="section-label">Recap</p>
+          <p>A priority queue stores items with priorities. Unlike a regular queue, the next item removed is the item with the best priority—not necessarily the item that arrived first. A min-priority queue removes the smallest item; a max-priority queue removes the largest.</p>
+        </section>
+        <section>
+          <p class="section-label">Visual</p>
+          <pre>min-priority queue
+insert:  7, 3, 9, 4
+remove:  3 → 4 → 7 → 9
+The minimum stays ready at the front.</pre>
+        </section>
+        <section>
+          <p class="section-label">Core operations</p>
+          <pre>insert(x)       add x
+findMin()       inspect the minimum
+removeMin()     remove and return the minimum
+isEmpty()       test whether no items remain
+
+Binary heap implementation:
+insert / removeMin: O(log N)
+findMin:            O(1)</pre>
+          <p class="note">Textbook basis: Sections 6.1–6.2, “Model” and “Simple Implementations.”</p>
+        </section>
+      </div>
+    </article>
+    <article class="topic-card" aria-labelledby="binary-heap-title">
+      <h2 class="topic-card__heading" id="binary-heap-title"><span class="topic-card__number">02</span> Binary Heaps</h2>
+      <div class="topic-card__body">
+        <section>
+          <p class="section-label">Recap</p>
+          <p>A binary heap is a complete binary tree usually stored in an array. In a min heap, every parent is less than or equal to each child, so the root is the minimum. In a max heap, every parent is greater than or equal to each child, so the root is the maximum. The remaining values are not fully sorted.</p>
+        </section>
+        <section>
+          <p class="section-label">Visual · Min-heap array representation</p>
+          <pre class="tree-diagram">          3       index:  1  2  3  4  5  6
+        /   \     heap:  [3, 5, 7, 9, 6, 8]
+       5     7
+      / \   /
+     9   6 8
+
+For index i: 
+parent = i / 2
+left   = 2i
+right  = 2i + 1</pre>
+        </section>
+        <section>
+          <p class="section-label">Pseudocode · Min heap</p>
+          <pre>insert(x):
+    place x in the next open array slot
+    while x is smaller than its parent:
+        swap x with its parent
+
+removeMin():
+    save the root
+    move the last item to the root
+    repeatedly swap it with its smaller child
+    return the saved root</pre>
+          <p class="section-label" style="margin-top: 1.5rem;">Pseudocode · Max heap</p>
+          <pre>insert(x):
+    place x in the next open array slot
+    while x is larger than its parent:
+        swap x with its parent
+
+removeMax():
+    save the root
+    move the last item to the root
+    repeatedly swap it with its larger child
+    return the saved root</pre>
+          <p class="note">Textbook basis: Sections 6.3.1–6.3.3, “Binary Heap.”</p>
+        </section>
+      </div>
+    </article>
+    <article class="topic-card" aria-labelledby="hash-tables-title">
+      <h2 class="topic-card__heading" id="hash-tables-title"><span class="topic-card__number">03</span> Hash Tables</h2>
+      <div class="topic-card__body">
+        <section>
+          <p class="section-label">Recap</p>
+          <p>A hash table uses a hash function to turn a key into an array position, called a bucket. It is a good fit when the goal is fast lookup by key rather than sorted order. Two different keys can map to the same bucket; that is a collision.</p>
+        </section>
+        <section>
+          <p class="section-label">Visual · Separate chaining</p>
+          <pre>table size = 5
+h(key) = key mod 5
+
+bucket 0:  10 → 25
+bucket 1:
+bucket 2:   7
+bucket 3:
+bucket 4:  14
+
+10 and 25 collide because both hash to 0.</pre>
+        </section>
+        <section>
+          <p class="section-label">Core idea</p>
+          <p>With a well-distributed hash function and a controlled load factor, lookup, insertion, and removal are <code>O(1)</code> on average. When too many items share too few buckets, the table is rehashed into a larger table to keep those operations fast.</p>
+          <p class="note">Textbook basis: Sections 5.1–5.6, “Hashing.”</p>
+        </section>
+      </div>
+    </article>
+    <article class="topic-card" aria-labelledby="cpp-maps-title">
+      <h2 class="topic-card__heading" id="cpp-maps-title"><span class="topic-card__number">04</span> <code>map</code> &amp; <code>unordered_map</code></h2>
+      <div class="topic-card__body">
+        <section>
+          <p class="section-label">Recap</p>
+          <p>Both containers store unique key-value pairs. Choose <code>std::map</code> when keys must stay sorted; its lookup, insertion, and removal are <code>O(log N)</code>. Choose <code>std::unordered_map</code> for average <code>O(1)</code> lookup when key order does not matter.</p>
+        </section>
+        <section>
+          <p class="section-label">Example</p>
+          <pre>#include &lt;map&gt;
+#include &lt;unordered_map&gt;
+
+std::map&lt;std::string, int&gt; scores;
+scores["Ada"] = 95; // keys in sorted order
+
+std::unordered_map&lt;std::string, int&gt; counts;
+counts["heap"]++; // key goes to hash bucket</pre>
+        </section>
+        <section>
+          <p class="section-label">Use the key</p>
+          <pre>if (scores.contains("Ada")):
+    score = scores.at("Ada")
+
+for each [name, score] in scores:
+    visit pairs by name order</pre>
+          <p><code>operator[]</code> accesses a key but creates a value when that key is absent. Use <code>at()</code> when a missing key should be reported instead of inserted.</p>
+          <p class="note">Textbook basis: Chapter 5, “Hashing”; C++ container details: <code>std::map</code> and <code>std::unordered_map</code>.</p>
+        </section>
+      </div>
+    </article>
+    <nav class="recap-footer" aria-label="Page navigation">
+      <a class="return-link" href="../../../index.html">← Back to homepage</a>
+    </nav>
+  </main>
+</body>
+</html>
