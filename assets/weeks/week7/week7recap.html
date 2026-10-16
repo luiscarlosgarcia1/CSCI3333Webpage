@@ -11,8 +11,8 @@
     <a class="home-link" href="../../../index.html">← Home</a>
     <div class="page-header__content">
       <p class="eyebrow">CSCI 3333 · Week 07</p>
-      <h1>Heaps, Hash Tables &amp; Maps</h1>
-      <p class="page-header__summary">A compact review of priority queues, binary heaps, hashing, and C++ key-value containers.</p>
+      <h1>Heaps</h1>
+      <p class="page-header__summary">A compact review of priority queues and binary heaps.</p>
     </div>
   </header>
   <main class="recap">
@@ -88,63 +88,6 @@ removeMax():
     repeatedly swap it with its larger child
     return the saved root</pre>
           <p class="note">Textbook basis: Sections 6.3.1–6.3.3, “Binary Heap.”</p>
-        </section>
-      </div>
-    </article>
-    <article class="topic-card" aria-labelledby="hash-tables-title">
-      <h2 class="topic-card__heading" id="hash-tables-title"><span class="topic-card__number">03</span> Hash Tables</h2>
-      <div class="topic-card__body">
-        <section>
-          <p class="section-label">Recap</p>
-          <p>A hash table uses a hash function to turn a key into an array position, called a bucket. It is a good fit when the goal is fast lookup by key rather than sorted order. Two different keys can map to the same bucket; that is a collision.</p>
-        </section>
-        <section>
-          <p class="section-label">Visual · Separate chaining</p>
-          <pre>table size = 5
-h(key) = key mod 5
-
-bucket 0:  10 → 25
-bucket 1:
-bucket 2:   7
-bucket 3:
-bucket 4:  14
-
-10 and 25 collide because both hash to 0.</pre>
-        </section>
-        <section>
-          <p class="section-label">Core idea</p>
-          <p>With a well-distributed hash function and a controlled load factor, lookup, insertion, and removal are <code>O(1)</code> on average. When too many items share too few buckets, the table is rehashed into a larger table to keep those operations fast.</p>
-          <p class="note">Textbook basis: Sections 5.1–5.6, “Hashing.”</p>
-        </section>
-      </div>
-    </article>
-    <article class="topic-card" aria-labelledby="cpp-maps-title">
-      <h2 class="topic-card__heading" id="cpp-maps-title"><span class="topic-card__number">04</span> <code>map</code> &amp; <code>unordered_map</code></h2>
-      <div class="topic-card__body">
-        <section>
-          <p class="section-label">Recap</p>
-          <p>Both containers store unique key-value pairs. Choose <code>std::map</code> when keys must stay sorted; its lookup, insertion, and removal are <code>O(log N)</code>. Choose <code>std::unordered_map</code> for average <code>O(1)</code> lookup when key order does not matter.</p>
-        </section>
-        <section>
-          <p class="section-label">Example</p>
-          <pre>#include &lt;map&gt;
-#include &lt;unordered_map&gt;
-
-std::map&lt;std::string, int&gt; scores;
-scores["Ada"] = 95; // keys in sorted order
-
-std::unordered_map&lt;std::string, int&gt; counts;
-counts["heap"]++; // key goes to hash bucket</pre>
-        </section>
-        <section>
-          <p class="section-label">Use the key</p>
-          <pre>if (scores.contains("Ada")):
-    score = scores.at("Ada")
-
-for each [name, score] in scores:
-    visit pairs by name order</pre>
-          <p><code>operator[]</code> accesses a key but creates a value when that key is absent. Use <code>at()</code> when a missing key should be reported instead of inserted.</p>
-          <p class="note">Textbook basis: Chapter 5, “Hashing”; C++ container details: <code>std::map</code> and <code>std::unordered_map</code>.</p>
         </section>
       </div>
     </article>
