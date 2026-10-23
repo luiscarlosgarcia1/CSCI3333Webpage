@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Week 9 Recap | CSCI 3333</title>
+  <link rel="stylesheet" href="../../../components/week-recap.css">
+</head>
+<body>
+  <header class="page-header">
+    <a class="home-link" href="../../../index.html">← Home</a>
+    <div class="page-header__content">
+      <p class="eyebrow">CSCI 3333 · Week 09</p>
+      <h1>Shortest Paths: Dijkstra</h1>
+      <p class="page-header__summary">Dijkstra’s algorithm repeatedly finalizes the closest unvisited vertex to find shortest paths from one start vertex.</p>
+    </div>
+  </header>
+
+  <main class="recap">
+    <article class="topic-card" aria-labelledby="dijkstra-title">
+      <h2 class="topic-card__heading" id="dijkstra-title"><span class="topic-card__number">01</span> Dijkstra’s Algorithm</h2>
+      <div class="topic-card__body">
+        <section>
+          <p class="section-label">Recap</p>
+          <p>Dijkstra’s algorithm solves the <strong>single-source shortest-path</strong> problem in a weighted graph whose edge weights are nonnegative. It keeps a best-known distance for every vertex. At each step, it chooses the unvisited vertex with the smallest tentative distance; that distance is then final.</p>
+          <p>The key operation is <strong>relaxing</strong> an edge: if reaching <code>v</code> through <code>u</code> is shorter than the current route to <code>v</code>, replace <code>dist[v]</code> and remember <code>u</code> as its predecessor.</p>
+        </section>
+        <section>
+          <p class="section-label">Visual · Start at A</p>
+          <pre>      4       1
+  A ----- B ----- C
+  |       |       |
+  1       2       3
+  |       |       |
+  D ----- E ----- F
+      5       1
+
+Initial:  dist(A)=0; all others = ∞
+
+Start  A: B=4, D=1
+Choose D: E=6
+Choose B: C=5, E=min(6, 4+2)=6
+Choose C: F=8
+Choose E: F=min(8, 6+1)=7
+
+Final distances from A: 
+  A=0, B=4, C=5, D=1, E=6, F=7</pre>
+        </section>
+        <section>
+          <p class="section-label">Pseudocode</p>
+          <pre>dijkstra(G, start):
+    for each vertex v:
+        dist[v] = ∞
+        prev[v] = none
+    dist[start] = 0
+    add all vertices to a min-priority queue
+
+    while queue is not empty:
+        u = remove vertex with smallest dist
+        for each edge (u, v) with weight w:
+            if dist[u] + w &lt; dist[v]:
+                dist[v] = dist[u] + w
+                prev[v] = u
+                update v in the queue
+
+    return dist, prev</pre>
+          <p>With an adjacency list and a binary-heap priority queue, the running time is <code>O((V + E) log V)</code>. Follow the <code>prev</code> links backward from a destination to rebuild its shortest path.</p>
+          <p class="note">Textbook basis: Section 9.3.2, “Dijkstra’s Algorithm.”</p>
+        </section>
+      </div>
+    </article>
+
+    <nav class="recap-footer" aria-label="Page navigation">
+      <a class="return-link" href="../../../index.html">← Back to homepage</a>
+    </nav>
+  </main>
+</body>
+</html>
