@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Week 10 Recap | CSCI 3333</title>
+  <link rel="stylesheet" href="../../../components/week-recap.css">
+</head>
+<body>
+  <header class="page-header">
+    <a class="home-link" href="../../../index.html">← Home</a>
+    <div class="page-header__content">
+      <p class="eyebrow">CSCI 3333 · Week 10</p>
+      <h1>Shortest Paths &amp; Network Flows</h1>
+      <p class="page-header__summary">A compact review of Bellman–Ford, maximum flow, bipartite perfect matching, and Edmonds–Karp.</p>
+    </div>
+  </header>
+
+  <main class="recap">
+    <article class="topic-card" aria-labelledby="bellman-ford-title">
+      <h2 class="topic-card__heading" id="bellman-ford-title"><span class="topic-card__number">01</span> Bellman–Ford</h2>
+      <div class="topic-card__body">
+        <section>
+          <p class="section-label">Recap</p>
+          <p>Bellman–Ford finds shortest-path distances from one start vertex even when some edges have negative weights. Its invariant is that after pass <code>i</code>, every shortest path using at most <code>i</code> edges has been considered.</p>
+        </section>
+        <section>
+          <p class="section-label">Visual · Relax an edge</p>
+          <pre>s --(4)--&gt; a --(-2)--&gt; b
+direct distance to b: 5
+
+known: dist[a] = 4
+candidate through a: 4 + (-2) = 2
+update: dist[b] = min(5, 2) = 2</pre>
+        </section>
+        <section>
+          <p class="section-label">Pseudocode</p>
+          <pre>set dist[start] = 0; all other distances = infinity
+
+repeat |V| - 1 times:
+    for every edge (u, v) with weight w:
+        dist[v] = min(dist[v], dist[u] + w)
+
+make one more pass:
+    if any distance improves:
+        a reachable negative cycle exists</pre>
+          <p>It runs in <code>O(|V||E|)</code>. A negative cycle reachable from the start means some destinations have no finite shortest distance.</p>
+        </section>
+      </div>
+    </article>
+
+    <article class="topic-card" aria-labelledby="network-flow-title">
+      <h2 class="topic-card__heading" id="network-flow-title"><span class="topic-card__number">02</span> Network Flows</h2>
+      <div class="topic-card__body">
+        <section>
+          <p class="section-label">Recap</p>
+          <p>A flow network sends as much as possible from source <code>s</code> to sink <code>t</code>. Each edge has a capacity, no edge may exceed it, and every non-source/non-sink vertex preserves flow: what enters must leave.</p>
+        </section>
+        <section>
+          <p class="section-label">Visual · One augmenting path</p>
+          <pre>s --3--&gt; a --2--&gt; t
+
+bottleneck = min(3, 2) = 2
+send 2 units:  s ==2==&gt; a ==2==&gt; t
+remaining forward capacity: 1, 0
+residual reverse capacity:  2, 2</pre>
+        </section>
+        <section>
+          <p class="section-label">Core idea</p>
+          <p>The residual graph records what is still possible. A forward residual edge has unused capacity; a reverse residual edge permits canceling earlier flow so the algorithm can change its mind. When no residual path from <code>s</code> to <code>t</code> remains, the current flow is maximum and the reachable vertices define a minimum cut.</p>
+          <p class="note">Textbook basis: Section 9.4, “Network Flow Problems.”</p>
+        </section>
+      </div>
+    </article>
+
+    <article class="topic-card" aria-labelledby="matching-title">
+      <h2 class="topic-card__heading" id="matching-title"><span class="topic-card__number">03</span> Perfect Matching</h2>
+      <div class="topic-card__body">
+        <section>
+          <p class="section-label">Recap</p>
+          <p>A matching chooses edges so no vertex is used twice. In a bipartite graph, a perfect matching pairs every vertex on both sides exactly once. A maximum matching can be found with max flow.</p>
+        </section>
+        <section>
+          <p class="section-label">Visual · Convert matching to flow</p>
+          <pre>source --(1)--&gt; L1 --(1)--&gt; R1 --(1)--&gt; sink
+                |          |
+            (1) |          | (1)
+                v          v
+                L2 --(1)--&gt; R2
+
+Every edge has capacity 1.
+A unit of flow L1 --&gt; R1 means: match L1 with R1.</pre>
+        </section>
+        <section>
+          <p class="section-label">Check</p>
+          <p>Connect the source to each left vertex and each right vertex to the sink with capacity <code>1</code>. Give each allowed left-to-right pairing capacity <code>1</code>. The flow value equals the number of pairs. With <code>N</code> vertices on each side, the matching is perfect exactly when the maximum flow is <code>N</code>.</p>
+        </section>
+      </div>
+    </article>
+
+    <article class="topic-card" aria-labelledby="edmonds-karp-title">
+      <h2 class="topic-card__heading" id="edmonds-karp-title"><span class="topic-card__number">04</span> Edmonds–Karp</h2>
+      <div class="topic-card__body">
+        <section>
+          <p class="section-label">Recap</p>
+          <p>Edmonds–Karp is Ford–Fulkerson with one important rule: use breadth-first search to choose an augmenting path with the fewest edges in the residual graph.</p>
+        </section>
+        <section>
+          <p class="section-label">Pseudocode</p>
+          <pre>while BFS finds a path from s to t:
+    b = path's smallest residual capacity
+    subtract b forward; add b backward
+    total flow += b</pre>
+        </section>
+        <section>
+          <p class="section-label">Why BFS helps</p>
+          <p>Each BFS is <code>O(|E|)</code>. Choosing shortest augmenting paths bounds the number of augmentations, giving Edmonds–Karp a running time of <code>O(|V||E|²)</code>. It still relies on reverse residual edges: a later path may need to reroute earlier flow.</p>
+          <p class="note">Textbook basis: Section 9.4, “Network Flow Problems,” for residual graphs and augmenting paths.</p>
+        </section>
+      </div>
+    </article>
+
+    <nav class="recap-footer" aria-label="Page navigation">
+      <a class="return-link" href="../../../index.html">← Back to homepage</a>
+    </nav>
+  </main>
+</body>
+</html>
