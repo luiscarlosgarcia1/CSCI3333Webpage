@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Week 11 Recap | CSCI 3333</title>
+  <link rel="stylesheet" href="../../../components/week-recap.css">
+</head>
+<body>
+  <header class="page-header">
+    <a class="home-link" href="../../../index.html">← Home</a>
+    <div class="page-header__content">
+      <p class="eyebrow">CSCI 3333 · Week 11</p>
+      <h1>Network Flows &amp; Perfect Matching</h1>
+      <p class="page-header__summary">A concise review of residual networks, bipartite perfect matching, and the Edmonds–Karp maximum-flow algorithm.</p>
+    </div>
+  </header>
+
+  <main class="recap">
+    <article class="topic-card" aria-labelledby="network-flows-title">
+      <h2 class="topic-card__heading" id="network-flows-title"><span class="topic-card__number">01</span> Network Flows</h2>
+      <div class="topic-card__body">
+        <section>
+          <p class="section-label">Recap</p>
+          <p>A flow network sends as much as possible from source <code>s</code> to sink <code>t</code>. Every edge has a capacity, and its flow cannot exceed that capacity. At each vertex other than <code>s</code> and <code>t</code>, flow is conserved: the amount entering equals the amount leaving.</p>
+        </section>
+        <section>
+          <p class="section-label">Visual · Augmenting a path</p>
+          <pre>s --3--&gt; a --2--&gt; t
+
+residual capacities on this path: 3, 2
+bottleneck = min(3, 2) = 2
+
+send 2 units:
+s ==2==&gt; a ==2==&gt; t
+
+remaining forward capacity: 1, 0
+new reverse residual capacity: 2, 2</pre>
+        </section>
+        <section>
+          <p class="section-label">Core idea</p>
+          <p>The residual graph shows what can change. A forward residual edge represents unused capacity; a reverse residual edge allows an earlier choice to be undone and rerouted. If no residual path from <code>s</code> to <code>t</code> remains, the flow is maximum.</p>
+          <p class="note">Textbook basis: Section 9.4, “Network Flow Problems.”</p>
+        </section>
+      </div>
+    </article>
+
+    <article class="topic-card" aria-labelledby="perfect-matching-title">
+      <h2 class="topic-card__heading" id="perfect-matching-title"><span class="topic-card__number">02</span> Perfect Matching</h2>
+      <div class="topic-card__body">
+        <section>
+          <p class="section-label">Recap</p>
+          <p>A matching selects edges so that no vertex appears in more than one selected edge. In a bipartite graph, a perfect matching gives every vertex on the left and every vertex on the right exactly one partner.</p>
+        </section>
+        <section>
+          <p class="section-label">Visual · Turn matching into flow</p>
+          <pre>source    left     right      sink
+  s --1--&gt; L1 --1--&gt; R1 --1--&gt; t
+   \         \--1--&gt; R2
+    \--1--&gt; L2 --1--&gt; R2
+
+Every edge has capacity 1.
+One unit on L1 --&gt; R1 means: match L1 with R1.</pre>
+        </section>
+        <section>
+          <p class="section-label">Check</p>
+          <p>Connect <code>s</code> to each left-side vertex, every allowed left-to-right pairing, and each right-side vertex to <code>t</code>; give every edge capacity <code>1</code>. The maximum-flow value is the number of matched pairs. If there are <code>N</code> vertices on each side, the matching is perfect exactly when the maximum flow is <code>N</code>.</p>
+        </section>
+      </div>
+    </article>
+
+    <article class="topic-card" aria-labelledby="edmonds-karp-title">
+      <h2 class="topic-card__heading" id="edmonds-karp-title"><span class="topic-card__number">03</span> Edmonds–Karp</h2>
+      <div class="topic-card__body">
+        <section>
+          <p class="section-label">Recap</p>
+          <p>Edmonds–Karp is Ford–Fulkerson with a fixed path rule: use breadth-first search to find an augmenting path with the fewest edges in the residual graph.</p>
+        </section>
+        <section>
+          <p class="section-label">Pseudocode</p>
+          <pre>maxFlow = 0
+
+while BFS finds a residual path from s to t:
+    b = smallest residual capacity on the path
+    subtract b from forward residual edges
+    add b to reverse residual edges
+    maxFlow += b
+
+return maxFlow</pre>
+        </section>
+        <section>
+          <p class="section-label">Why BFS matters</p>
+          <p>Each BFS takes <code>O(|E|)</code>. Choosing shortest augmenting paths bounds the number of augmentations, so Edmonds–Karp runs in <code>O(|V||E|²)</code>. The reverse residual edges are essential: a later augmenting path may reroute flow chosen earlier.</p>
+          <p class="note">Textbook basis: Section 9.4, “Network Flow Problems.”</p>
+        </section>
+      </div>
+    </article>
+
+    <nav class="recap-footer" aria-label="Page navigation">
+      <a class="return-link" href="../../../index.html">← Back to homepage</a>
+    </nav>
+  </main>
+</body>
+</html>
