@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Week 12 Recap | CSCI 3333</title>
+  <link rel="stylesheet" href="../../../components/week-recap.css">
+</head>
+<body>
+  <header class="page-header">
+    <a class="home-link" href="../../../index.html">← Home</a>
+    <div class="page-header__content">
+      <p class="eyebrow">CSCI 3333 · Week 12</p>
+      <h1>Divide and Conquer</h1>
+      <p class="page-header__summary">A concise review of recurrences, faster multiplication, worst-case linear selection, and unequal-size recursive calls.</p>
+    </div>
+  </header>
+
+  <main class="recap">
+    <article class="topic-card" aria-labelledby="divide-conquer-title">
+      <h2 class="topic-card__heading" id="divide-conquer-title"><span class="topic-card__number">01</span> Divide and Conquer &amp; the Master Theorem</h2>
+      <div class="topic-card__body">
+        <section>
+          <p class="section-label">Recap</p>
+          <p>Divide and conquer solves smaller, disjoint subproblems recursively, then combines their answers. For a recurrence <code>T(N) = aT(N/b) + Θ(N<sup>k</sup>)</code>, compare the number of subproblems, <code>a</code>, with <code>b<sup>k</sup></code>: the amount of work represented by the recursive levels.</p>
+        </section>
+        <section>
+          <p class="section-label">Visual · One recurrence tree</p>
+          <pre>T(N) = 2T(N/2) + Θ(N)
+
+level 0:       Θ(N)
+level 1:   2 × Θ(N/2) = Θ(N)
+level 2:   4 × Θ(N/4) = Θ(N)
+...
+log₂ N levels, each costing Θ(N)
+
+total: Θ(N log N)</pre>
+        </section>
+        <section>
+          <p class="section-label">Master theorem</p>
+          <pre>T(N) = aT(N/b) + Θ(Nᵏ)
+
+a &gt; bᵏ  → Θ(N^(log_b a))  recursive work dominates
+a = bᵏ  → Θ(Nᵏ log N)      every level balances
+a &lt; bᵏ  → Θ(Nᵏ)            combine work dominates</pre>
+          <p>For merge sort, <code>a = 2</code>, <code>b = 2</code>, and <code>k = 1</code>, so <code>a = b<sup>k</sup></code> and the time is <code>Θ(N log N)</code>.</p>
+          <p class="note">Textbook basis: Section 10.2.1, “Running Time of Divide-and-Conquer Algorithms.”</p>
+        </section>
+      </div>
+    </article>
+
+    <article class="topic-card" aria-labelledby="multiple-size-title">
+      <h2 class="topic-card__heading" id="multiple-size-title"><span class="topic-card__number">02</span> Master Theorem · Multiple Sizes</h2>
+      <div class="topic-card__body">
+        <section>
+          <p class="section-label">Recap</p>
+          <p>When recursive calls have different size fractions, the ordinary <code>aT(N/b)</code> form does not fit. Use a characteristic equation to find the exponent created by all recursive calls together.</p>
+        </section>
+        <section>
+          <p class="section-label">Characteristic equation</p>
+          <pre>T(n) = c nᵅ logᵝ n + Σ aᵢT(⌈bᵢn⌉)
+                         0 &lt; bᵢ &lt; 1
+
+g(x) = Σ aᵢbᵢˣ
+find r such that g(r) = 1
+
+Then compare r with α.</pre>
+        </section>
+        <section>
+          <p class="section-label">Result</p>
+          <pre>r &gt; α  → T(n) = Θ(nʳ)
+r = α  → T(n) = Θ(nᵅ log^(β+1) n)
+r &lt; α  → T(n) = Θ(nᵅ logᵝ n)
+
+Selection example:
+T(n) = T(n/5) + T(7n/10) + Θ(n)
+
+g(1) = 1/5 + 7/10 = 9/10 &lt; 1
+so r &lt; 1 = α, and T(n) = Θ(n).</pre>
+          <p>The last line agrees with the median-of-medians analysis above. The handout’s theorem is the source for this unequal-subproblem version.</p>
+          <p class="note">Handout basis: “Multiple-Size Divide-and-Conquer Recurrences,” Theorem 1.</p>
+        </section>
+      </div>
+    </article>
+
+    <article class="topic-card" aria-labelledby="linear-selection-title">
+      <h2 class="topic-card__heading" id="linear-selection-title"><span class="topic-card__number">03</span> Linear-Time Selection</h2>
+      <div class="topic-card__body">
+        <section>
+          <p class="section-label">Recap</p>
+          <p>Selection asks for the <code>k</code>th smallest element without fully sorting the collection. Median-of-medians chooses a pivot that is guaranteed to discard a constant fraction of the elements, giving worst-case linear time.</p>
+        </section>
+        <section>
+          <p class="section-label">Visual · Median of medians</p>
+          <pre>Split into groups of 5; find each group median.
+
+[ 2  7  9 12 18 ] →  9
+[ 1  4 10 11 20 ] → 10
+[ 3  5  6 15 19 ] →  6
+             ...
+
+pivot = median of the medians
+partition around pivot; recurse only where k lies</pre>
+        </section>
+        <section>
+          <p class="section-label">Why the recurrence is linear</p>
+          <pre>T(N) ≤ T(N/5) + T(7N/10) + Θ(N)
+
+median of medians: at most N/5 items
+after partitioning: at most about 7N/10 items
+
+1/5 + 7/10 = 9/10 &lt; 1
+so the total work is Θ(N)</pre>
+          <p>The algorithm makes one recursive call to find the pivot and one recursive call on the side containing the desired rank. It does <em>not</em> recurse on both partitioned sides.</p>
+          <p class="note">Textbook basis: Section 10.2.3, “The Selection Problem.”</p>
+        </section>
+      </div>
+    </article>
+
+    <article class="topic-card" aria-labelledby="karatsuba-title">
+      <h2 class="topic-card__heading" id="karatsuba-title"><span class="topic-card__number">04</span> Karatsuba Integer Multiplication</h2>
+      <div class="topic-card__body">
+        <section>
+          <p class="section-label">Recap</p>
+          <p>Splitting two <code>N</code>-digit numbers into high and low halves appears to need four half-size products. Karatsuba gets the middle term from one extra product plus additions, so it makes only three recursive multiplications.</p>
+        </section>
+        <section>
+          <p class="section-label">Visual · The three products</p>
+          <pre>x = x₁Bᵐ + x₀        y = y₁Bᵐ + y₀
+
+p = x₁y₁              q = x₀y₀
+r = (x₁ + x₀)(y₁ + y₀)
+
+xy = pB²ᵐ + (r - p - q)Bᵐ + q
+
+The middle coefficient uses r - p - q,
+not two separate cross products.</pre>
+        </section>
+        <section>
+          <p class="section-label">Recurrence</p>
+          <pre>T(N) = 3T(N/2) + Θ(N)
+
+a = 3, b = 2, k = 1
+3 &gt; 2¹
+
+T(N) = Θ(N^(log₂ 3)) ≈ Θ(N^1.59)</pre>
+          <p>The ordinary digit-by-digit method takes <code>Θ(N²)</code>. Karatsuba trades arithmetic additions and subtractions for one fewer recursive multiplication.</p>
+          <p class="note">Textbook basis: Section 10.2.4, “Multiplying Integers.”</p>
+        </section>
+      </div>
+    </article>
+
+    <article class="topic-card" aria-labelledby="strassen-title">
+      <h2 class="topic-card__heading" id="strassen-title"><span class="topic-card__number">05</span> Strassen Matrix Multiplication</h2>
+      <div class="topic-card__body">
+        <section>
+          <p class="section-label">Recap</p>
+          <p>Split each <code>N × N</code> matrix into four <code>N/2 × N/2</code> quadrants. The direct block formula needs eight recursive matrix multiplications. Strassen rearranges sums and differences so that seven are enough.</p>
+        </section>
+        <section>
+          <p class="section-label">Visual · Block multiplication</p>
+          <pre>      [ A11  A12 ] [ B11  B12 ]
+AB =  [ A21  A22 ] [ B21  B22 ]
+
+C11 = A11B11 + A12B21
+
+Direct recursion: 8 half-size products
+Strassen:         7 half-size products
+                + Θ(N²) block additions</pre>
+        </section>
+        <section>
+          <p class="section-label">Recurrence</p>
+          <pre>T(N) = 7T(N/2) + Θ(N²)
+
+a = 7, b = 2, k = 2
+7 &gt; 2²
+
+T(N) = Θ(N^(log₂ 7)) ≈ Θ(N^2.81)</pre>
+          <p>This beats the usual <code>Θ(N³)</code> bound asymptotically. The savings come from replacing one expensive recursive matrix product with cheaper block additions and subtractions.</p>
+          <p class="note">Textbook basis: Section 10.2.4, “Matrix Multiplication.”</p>
+        </section>
+      </div>
+    </article>
+
+    <nav class="recap-footer" aria-label="Page navigation">
+      <a class="return-link" href="../../../index.html">← Back to homepage</a>
+    </nav>
+  </main>
+</body>
+</html>
