@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Week 13 Recap | CSCI 3333</title>
+  <link rel="stylesheet" href="../../../components/week-recap.css">
+</head>
+<body>
+  <header class="page-header">
+    <a class="home-link" href="../../../index.html">← Home</a>
+    <div class="page-header__content">
+      <p class="eyebrow">CSCI 3333 · Week 13</p>
+      <h1>Dynamic Programming</h1>
+      <p class="page-header__summary">Solve each smaller subproblem once, save its answer, and build toward the final one.</p>
+    </div>
+  </header>
+
+  <main class="recap">
+    <article class="topic-card" aria-labelledby="dp-idea-title">
+      <h2 class="topic-card__heading" id="dp-idea-title"><span class="topic-card__number">01</span> The Dynamic Programming Idea</h2>
+      <div class="topic-card__body">
+        <section>
+          <p class="section-label">Recap</p>
+          <p>Dynamic programming applies when a problem has <strong>overlapping subproblems</strong>: a recursive solution asks for the same smaller answer again and again. Instead, solve each subproblem once and save the result.</p>
+          <p>Find a <strong>state</strong> that describes a smaller version of the problem, write a <strong>recurrence</strong> that connects states, set the <strong>base cases</strong>, then compute the states in an order that makes their dependencies available.</p>
+        </section>
+        <section>
+          <p class="section-label">Visual · Repeated work</p>
+          <pre>Naive recursion for F(5)
+
+          F(5)
+         /    \
+      F(4)    F(3)
+      /  \    /  \
+   F(3) F(2) F(2) F(1)
+
+F(3) and F(2) are needed more than once.
+DP computes each once, saves it, then reuses it.</pre>
+        </section>
+      </div>
+    </article>
+
+    <article class="topic-card" aria-labelledby="dp-table-title">
+      <h2 class="topic-card__heading" id="dp-table-title"><span class="topic-card__number">02</span> From Recurrence to Table</h2>
+      <div class="topic-card__body">
+        <section>
+          <p class="section-label">Recurrence</p>
+          <pre>F(0) = 0
+F(1) = 1
+F(n) = F(n - 1) + F(n - 2)</pre>
+          <p>The recurrence says what a state needs. Because <code>F(n)</code> depends on two smaller states, fill values from small <code>n</code> to large <code>n</code>.</p>
+        </section>
+        <section>
+          <p class="section-label">Pseudocode · Bottom-up</p>
+          <pre>dp[0] = 0
+dp[1] = 1
+
+for n from 2 to N:
+    dp[n] = dp[n - 1] + dp[n - 2]
+
+return dp[N]</pre>
+          <p>A table replaces the recursion tree. This version takes <code>Θ(N)</code> time and <code>Θ(N)</code> space; because only the two previous values are needed, the space can be reduced to <code>Θ(1)</code>.</p>
+          <p class="note">Textbook basis: Section 10.3, “Dynamic Programming.”</p>
+        </section>
+      </div>
+    </article>
+
+    <article class="topic-card" aria-labelledby="lcs-title">
+      <h2 class="topic-card__heading" id="lcs-title"><span class="topic-card__number">03</span> Application: Longest Common Subsequence</h2>
+      <div class="topic-card__body">
+        <section>
+          <p class="section-label">Recap</p>
+          <p>A <strong>subsequence</strong> keeps characters in their original order but may skip characters. For strings <code>X</code> and <code>Y</code>, let <code>dp[i][j]</code> be the LCS length of their first <code>i</code> and <code>j</code> characters.</p>
+        </section>
+        <section>
+          <p class="section-label">Visual · One table</p>
+          <pre>X = A B C D       Y = A C B D
+
+      ∅  A  C  B  D
+  ∅   0  0  0  0  0
+  A   0  1  1  1  1
+  B   0  1  1  2  2
+  C   0  1  2  2  2
+  D   0  1  2  2  3
+
+One LCS has length 3: A B D</pre>
+        </section>
+        <section>
+          <p class="section-label">Recurrence</p>
+          <pre>if X[i - 1] == Y[j - 1]:
+    dp[i][j] = dp[i - 1][j - 1] + 1
+else:
+    dp[i][j] = max(dp[i - 1][j], dp[i][j - 1])</pre>
+          <p>Matching characters extend a smaller answer. Otherwise, keep the better result after skipping one final character. The table takes <code>Θ(MN)</code> time and space.</p>
+        </section>
+      </div>
+    </article>
+
+    <nav class="recap-footer" aria-label="Page navigation">
+      <a class="return-link" href="../../../index.html">← Back to homepage</a>
+    </nav>
+  </main>
+</body>
+</html>
